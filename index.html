@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</head>
+<body class="container"  style="background-color:#F0F3BD;">
+    
+    <div class='d-flex justify-content-center'>
+        <div class='flex-column  justify-content-center' style="text-align:center;">
+            <h1 class=""> 커맨드 표를 이미지로 만드는 곳 </h1>
+            <form class="mb-3">
+                <p><textarea cols="50" rows="10" id="commandInput"></textarea></p>
+                <button type="button" class="btn btn-outline-dark" onclick="drawImage()">버튼1 </button>
+            </form>
+            <button type="button" class="btn btn-outline-primary" onclick="addImage1()">버튼1 </button>
+            <button type="button" class="btn btn-outline-primary" onclick="addImage2()">버튼2 </button>
+
+            <div id="result"></div>
+        </div>
+
+        <div class='flex-column  justify-content-center'>
+            <div id="result"></div>
+        </div>
+
+        
+    </div>
+    <script> 
+        let a = ' '
+
+        if (isNaN(' ') == false){
+            console.log("TEST Sucesss")
+        }
+        else{
+            console.log("TEST Fail")
+        }
+
+        let tempResult = document.getElementById("result");
+        let commandInput = document.getElementById('commandInput')
+        console.log("TEST")
+        let table = {
+            LP:"images/c2.png",
+            RP:"images/c3.png",
+            LK:"images/c5.png",
+            RK:"images/c9.png",
+            AP:"images/c4.png",
+            AK:"images/c13.png",
+            AL:"images/c6.png",
+            AR:"images/c11.png",
+            'LP+RK':"images/c10.png",
+            'RP+LK':"images/c7.png",
+            'LP+AK':"images/c14.png",
+            'RP+AK':"images/c15.png",
+            'AP+LK':"images/c8.png",
+            'AP+RK':"images/c12.png",
+            'ALL':"images/c16.png",
+            1:"images/w1.png",
+            2:"images/w2.png",
+            3:"images/w3.png",
+            4:"images/w4.png",
+            N:"images/w5.png",
+            5:"images/w5.png",
+            6:"images/w6.png",
+            7:"images/w7.png",
+            8:"images/w8.png",
+            9:"images/w9.png",
+        }
+        
+        //console.log(table)
+
+        function addOneImage(resultId, command){
+            let result = document.getElementById(resultId);
+            let child = undefined
+            if (command == '▶'){
+                child = document.createElement('span');
+                child.className = "mx-2 h5"
+                child.innerText = '▶'
+            }
+            else if (command == "T"){
+                child = document.createElement('span');
+                child.className = "mx-2"
+                child.innerText = '토네이도'
+            }
+            else{
+                child = document.createElement('img');
+                child.src= table[command]
+            }
+
+            result.appendChild(child)
+        }
+
+        function clearImage(){
+            let result = document.getElementById("result");
+
+            while (result.firstChild) {
+                result.removeChild(result.firstChild);
+            }
+        }
+
+        function processCommandLine(){
+            let commandInputContent = commandInput.value
+            commandInputContent = commandInputContent.toUpperCase();
+            console.log(commandInputContent)
+            let commandElementList = []
+            const len = commandInputContent.length
+            
+            let doneIndex = -1
+            let recentElement = undefined
+            for (let i = 0 ; i < len; i++){
+                if (i > doneIndex){
+                    let cur = commandInputContent[i]
+                // cur is number 12346789
+                    if( isNaN(cur) == false ){
+                        if (cur == " "){
+                            if (recentElement != "▶"){
+                                commandElementList.push("▶")
+                                recentElement = "▶"
+                            }
+                        }
+                        else{
+                            commandElementList.push(cur)
+                            doneIndex = i    
+                            recentElement = cur
+                        }
+                    }
+                    else{
+                        if (cur == "N"){
+                            //alert("N")
+                            commandElementList.push(cur)
+                            recentElement = cur
+                        }
+                        else if (['-',' '].includes(cur)){
+                            //alert("Seperator TEST")
+                            if (recentElement != "▶"){
+                                commandElementList.push("▶")
+                                recentElement = "▶"
+                            }
+                            else{}
+                        }
+                        else{
+                            while (1){
+                                //alert("else")
+                                if (i + 5 <= len){
+                                    const temp = commandInputContent.substr(i,5)
+                                    console.log(temp)
+                                    if (temp in table) {
+                                        doneIndex = i + 4
+                                        commandElementList.push(temp)
+                                        recentElement = temp
+                                        break
+                                    }
+                                    else{}
+                                }
+                                if (i + 3 <= len){
+                                    const temp = commandInputContent.substr(i,3)
+                                    console.log(temp)
+                                    if (temp in table) {
+                                        doneIndex = i + 2
+                                        commandElementList.push(temp)
+                                        recentElement = temp
+                                        break
+                                    }
+                                    else{}
+                                }
+                                if (i+ 2 <= len){
+                                    const temp = commandInputContent.substr(i,2)
+                                    console.log(temp)
+                                    if (temp in table) {
+                                        doneIndex = i + 1
+                                        commandElementList.push(temp)
+                                        recentElement = temp
+                                        break
+                                    }
+                                    else{}
+                                }
+                                else{
+                                    console.log(i,cur)
+                                }
+
+                                break
+                            }   
+                        }
+                    }            
+                    
+                }
+                else{;}                
+            }
+            console.log(commandElementList)
+
+            return commandElementList
+        }
+
+        function drawImage(){
+            clearImage()
+            const result = processCommandLine()
+
+            const len = result.length
+            for (let i = 0; i < len; i ++){
+                addOneImage("result",result[i])
+            }
+        }
+
+
+        function addImage1 (command){
+            var img = document.createElement("img");
+            img.src=table[1]
+            //console.log(img.src)
+
+            //console.log("Call addimage1")
+            tempResult.appendChild(img)
+        }
+        function addImage2(){
+            for(let i= 1 ; i < 10 ; i++){
+                ;//addOneImage("result",i)
+            }
+            let list = ["LP","RP","LK","RK"]
+
+            for (let i = 0; i < 4 ; i ++){
+                addOneImage("result",list[i])
+
+            }
+            //console.log("Call addimage2")
+        }
+
+        function addImageButton(cell, url, className, id, text, tooltip, clickFunction) {
+            var btn = document.createElement("button");
+            if(className != null) btn.className = className;
+            if(url != null) btn.style.backgroundImage = "url('" + url + "')";
+            if(id != null) btn.id = id;
+            if(text != null) btn.innerText = text;
+            if(tooltip != null) {
+                var spanTag = document.createElement("span");
+                spanTag.className = "tooltip-text";
+                spanTag.innerText = tooltip;
+
+                btn.appendChild(spanTag);
+            }
+        }
+    
+    </script>
+</body>
+</html>
