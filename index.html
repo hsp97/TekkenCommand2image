@@ -81,8 +81,9 @@
                         {allowTaint: true,
                         logging: true,
                         useCORS:true,
+                        backgroundColor:null,
                         }).then(canvas => {
-                document.body.appendChild(canvas)
+                //document.body.appendChild(canvas)
 
                 let image = canvas.toDataURL("image/png");
                 image.crossOrigin = 'anonymous';
