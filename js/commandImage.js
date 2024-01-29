@@ -289,7 +289,7 @@ function drawAllImage(){
     downloadAllBtn.onclick = function(){
         const len = downloadFuncList.length
         for (let i = 0 ; i < len; i++){
-            downloadFuncList[i]()
+            downloadFuncList[i]();
         }
     }
 }
