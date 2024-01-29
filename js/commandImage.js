@@ -1,4 +1,5 @@
-console.log("coammandimage Test")
+//import  html2canvas  from './html2canvas.min1.4.1.js';
+
 
 let table = {
     LP:"images/c2.png",
@@ -28,7 +29,57 @@ let table = {
     9:"images/w9.png",
 }
 
+function addResultElement(resultNum){
+    let resultId= 'result'+ String(resultNum);
+    let resultList = document.getElementById('resultList');
 
+
+    let resultElement = document.createElement('div');
+    resultElement.className = "my-4"
+    
+    let label = document.createElement('span')
+    label.className = "input-group-text"
+    label.innerHTML =resultNum
+    resultElement.appendChild(label)
+
+    let resultContent = document.createElement('div')
+    resultContent.id = resultId
+    resultContent.className="p-2 my-3 border border-1 border-dark"
+    resultElement.appendChild(resultContent)
+
+    let downloadButton = document.createElement('button')
+    downloadButton.className= "btn btn-success"
+    downloadButton.innerText = "다운로드"
+    
+    let downloadFunction = function(){
+        console.log("ONCLICK")
+
+
+        html2canvas(document.getElementById(resultId),
+            {
+                allowTaint: true,
+                logging: true,
+                useCORS:true,
+                backgroundColor:null,
+            })
+            .then(canvas => {
+
+                let image = canvas.toDataURL("image/png");
+                image.crossOrigin = 'anonymous';
+
+                const link = document.createElement("a");
+                link.href = image;
+                link.download = "paintJS.png";
+                link.click();
+          
+        });
+    }
+    downloadButton.onclick = downloadFunction
+    resultElement.appendChild(downloadButton)
+
+    resultList.appendChild(resultElement)
+    return [resultId, downloadFunction]
+}   
 
 function addOneImage(resultId, command){
     let result = document.getElementById(resultId);
@@ -68,9 +119,17 @@ function clearImage(){
     }
 }
 
-function processCommandLine(){
-    let commandInputContent = commandInput.value
-    commandInputContent = commandInputContent.toUpperCase();
+function clearAllImage(){
+    let resultList = document.getElementById("resultList");
+
+    while (resultList.firstChild) {
+        resultList.removeChild(resultList.firstChild);
+    }
+}
+
+function processCommandLine(commandLine){
+    
+    commandInputContent = commandLine
     console.log(commandInputContent)
     let commandElementList = []
     const len = commandInputContent.length
@@ -210,15 +269,38 @@ function processCommandPara(){
     commandInputContent = commandInputContent.toUpperCase();
     
     let commandLineList = commandInputContent.split('\n')
-    console.log(commandLineList)
+    return commandLineList
 }
 
-function drawImage(){
-    clearImage()
-    const result = processCommandLine()
+function drawAllImage(){
+    clearAllImage()
+    const resultList = processCommandPara()
+    const len = resultList.length
+    let downloadFuncList = []
+
+    for (let i = 0; i < len; i ++){
+        let [curResultId,curDownloadFunc] = addResultElement(i)
+        let curCommandLine = resultList[i]
+        drawImage(curResultId, curCommandLine)
+        downloadFuncList.push(curDownloadFunc)
+    }
+
+    let downloadAllBtn = document.getElementById('downloadAll');
+    downloadAllBtn.onclick = function(){
+        const len = downloadFuncList.length
+        for (let i = 0 ; i < len; i++){
+            downloadFuncList[i]()
+        }
+    }
+}
+
+
+function drawImage(curResultId, curCommandLine){
+    
+    const result = processCommandLine(curCommandLine)
 
     const len = result.length
     for (let i = 0; i < len; i ++){
-        addOneImage("result",result[i])
+        addOneImage(curResultId,result[i])
     }
 }
