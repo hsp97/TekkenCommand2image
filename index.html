@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Main</title>
+    <title>translateTitle</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
 </head>
 <body class=""  style="background-color:#F0F3BD;">
     
@@ -13,24 +14,32 @@
         <div class='flex-column  justify-content-center' style="text-align:center;">
             <h1 class=""> 커맨드 표를 이미지로 만드는 곳 </h1>
             <form class="mb-3">
-                <p><textarea cols="50" rows="10" id="commandInput"></textarea></p>
+                <p><textarea cols="50" rows="10" id="commandInput">rp</textarea></p>
                 <button type="button" class="btn btn-outline-dark" onclick="drawImage()">이미지로 변환 </button>
+                <button type="button" class="btn btn-outline-dark" onclick="downloadAll()">다운로드 </button>
             </form>
             <!-- <button type="button" class="btn btn-outline-primary" onclick="addImage1()">버튼1 </button>
             <button type="button" class="btn btn-outline-primary" onclick="addImage2()">버튼2 </button> -->
             <div  class="h2 pb-3" style="border-bottom: 5px dashed gray; " > 결과</div>
             <div id="result" class="mt-3"></div>
         
-        
-        <div class='flex-column  justify-content-center'>
+
+            <div id="resultList">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                    <div id="result2">  </div>
+                  </div>
+
+            </div>
+            
+            
             <div id="result">
 
             </div>
+            
         </div>
-
-        
-    </div>
     <script> 
+        
         let a = ' '
 
         if (isNaN(' ') == false){
@@ -43,265 +52,58 @@
         let tempResult = document.getElementById("result");
         let commandInput = document.getElementById('commandInput')
         console.log("TEST")
-        let table = {
-            LP:"images/c2.png",
-            RP:"images/c3.png",
-            LK:"images/c5.png",
-            RK:"images/c9.png",
-            AP:"images/c4.png",
-            AK:"images/c13.png",
-            AL:"images/c6.png",
-            AR:"images/c11.png",
-            'LP+RK':"images/c10.png",
-            'RP+LK':"images/c7.png",
-            'LP+AK':"images/c14.png",
-            'RP+AK':"images/c15.png",
-            'AP+LK':"images/c8.png",
-            'AP+RK':"images/c12.png",
-            'ALL':"images/c16.png",
-            1:"images/w1.png",
-            2:"images/w2.png",
-            3:"images/w3.png",
-            4:"images/w4.png",
-            N:"images/w5.png",
-            5:"images/w5.png",
-            6:"images/w6.png",
-            7:"images/w7.png",
-            8:"images/w8.png",
-            9:"images/w9.png",
-        }
         
-        //console.log(table)
-
-        function addOneImage(resultId, command){
-            let result = document.getElementById(resultId);
-            let child = undefined
-
-            if (command in table){
-                child = document.createElement('img');
-                child.src= table[command]
-            }
-            else if (command == "T"){
-                child = document.createElement('span');
-                child.className = "mx-2 h5 btn btn-outline-danger"
-                child.innerText = '토네이도'
-            }
-            else if (command == '▶'){
-                child = document.createElement('span');
-                child.className = "mx-2 h5"
-                child.innerText = '▶'
-            }
-            else{
-                child = document.createElement('span');
-                child.className = "mx-2 h5 btn btn-outline-danger"
-                child.innerText = command
-                child.disabled = true
+        function downloadAl2(){
+            console.log("downLoadAll")
+            html2canvas(document.getElementById('result'), {
+                useCORS: true, // 다른사이트의 리소스가있을때활성화(그러나...Access-Control-Allow-Origin 필요)
+                onrendered: function(canvas) {
+                canvas.toBlob(function(blob) {
+                    console.log(blob)
+                    const a = document.createElement("a")
+                    a.href = canvas.toDataURL();
+                    a.download = "check.png"
+                    a.click()
+                    a.remove()
+                    //saveAs(blob, 'download.png');
+                });
                 
+                // $("#test").html('<img src=' + canvas.toDataURL("image/png") + '>');
             }
+        });
 
-            result.appendChild(child)
         }
 
-        function clearImage(){
-            let result = document.getElementById("result");
-
-            while (result.firstChild) {
-                result.removeChild(result.firstChild);
-            }
-        }
-        
-        function processCommandLine(){
-            let commandInputContent = commandInput.value
-            commandInputContent = commandInputContent.toUpperCase();
-            console.log(commandInputContent)
-            let commandElementList = []
-            const len = commandInputContent.length
+        function downloadAll(){
+            console.log("downLoadAll2")
             
-            let doneIndex = -1
-            let recentElement = undefined
-            let notSymbolList = []
-            for (let i = 0 ; i < len; i++){
-                if (i > doneIndex){
-                    let cur = commandInputContent[i]
-                // cur is number 12346789
-                    //구분자 예외 처리
-                    if( ['1','2','3','4','6','7','8','9'].includes(cur) ){
-                        if (notSymbolList.length > 0){
-                            const notSymbolWord = notSymbolList.join("")
-                            console.log(notSymbolWord)
-                            commandElementList.push(notSymbolWord)
-                            notSymbolList = []
-                        }
-                        commandElementList.push(cur)
-                        doneIndex = i    
-                        recentElement = cur
-                        
-                    }
-                    else{
-                        // N은 중립 따라서 그냥 처리
-                        if (['N','T'].includes(cur)){
-                            //alert("N")
-                            commandElementList.push(cur)
-                            recentElement = cur
-                            
-                            doneIndex = i
-                        }
-                        else if (['-',' '].includes(cur)){
-                            // 구분자리스트 일단 -만 넣었음. 공백이 숫자로 걸렸는데 그냥 리스트 만들어서 해결
-                            if (notSymbolList.length > 0){
-                                    const notSymbolWord = notSymbolList.join("")
-                                    console.log(notSymbolWord)
-                                    commandElementList.push(notSymbolWord)
-                                    notSymbolList = []
-                                }                       
-                            if (recentElement != "▶"){
-                                
-                                commandElementList.push("▶")
-                                recentElement = "▶"
-                            }
-                            else{}
-                            
-                            doneIndex = i
-                        }
-                        else{
-                            while (1){
-                                //alert("else")
-                                if (i + 5 <= len){
-                                    
-                                    const temp = commandInputContent.substr(i,5)
-                                    //console.log(temp)
-                                    if (temp in table) {
-                                        if (notSymbolList.length > 0){
-                                            const notSymbolWord = notSymbolList.join("")
-                                            console.log(notSymbolWord)
-                                            commandElementList.push(notSymbolWord)
-                                            notSymbolList = []
-                                        }
-                                        doneIndex = i + 4
-                                        commandElementList.push(temp)
-                                        recentElement = temp
-                                        break
-                                    }
-                                    else{}
-                                }
-                                if (i + 3 <= len){
-                                    
-                                    const temp = commandInputContent.substr(i,3)
-                                    //console.log(temp)
-                                    if (temp in table) {
-                                        if (notSymbolList.length > 0){
-                                            const notSymbolWord = notSymbolList.join("")
-                                            console.log(notSymbolWord)
-                                            commandElementList.push(notSymbolWord)
-                                            notSymbolList = []
-                                        }
-                                        doneIndex = i + 2
-                                        commandElementList.push(temp)
-                                        recentElement = temp
-                                        break
-                                    }
-                                    else{}
-                                }
-                                if (i+ 2 <= len){
-                                    
-                                    const temp = commandInputContent.substr(i,2)
-                                    //console.log(temp)
-                                    if (temp in table) {
-                                        if (notSymbolList.length > 0){
-                                            const notSymbolWord = notSymbolList.join("")
-                                            console.log(notSymbolWord)
-                                            commandElementList.push(notSymbolWord)
-                                            notSymbolList = []
-                                        }
-                                        doneIndex = i + 1
-                                        commandElementList.push(temp)
-                                        recentElement = temp
-                                        break
-                                    }
-                                    else{}
-                                }
-                                else{
-                                    ;//console.log(i,cur)
-                                }
-                                
-                                notSymbolList.push(cur)
-                                doneIndex = i
-                                console.log("NOTSYMBOLIST",notSymbolList, commandElementList)
-                                break
-                            }   
-                        }
-                    }            
-                    
-                }
-                else{
+            html2canvas(document.querySelector("#result"),
+                        {allowTaint: true,
+                        logging: true,
+                        useCORS:true,
+                        }).then(canvas => {
+                document.body.appendChild(canvas)
 
-                }                
-            }
-            console.log(commandElementList)
-            if (notSymbolList.length > 0){
-                const notSymbolWord = notSymbolList.join("")
-                console.log(notSymbolWord)
-                commandElementList.push(notSymbolWord)
-                notSymbolList = []
-            }
-            return commandElementList
-        }
+                let image = canvas.toDataURL("image/png");
+                image.crossOrigin = 'anonymous';
 
-        function processCommandPara(){
-            let commandInputContent = commandInput.value
-            commandInputContent = commandInputContent.toUpperCase();
-            
-            let commandLineList = commandInputContent.split('\n')
-            console.log(commandLineList)
-        }
-        
-        function drawImage(){
-            clearImage()
-            const result = processCommandLine()
+                const link = document.createElement("a");
+                link.href = image;
+                link.download = "paintJS.png";
+                link.click();
+                
 
-            const len = result.length
-            for (let i = 0; i < len; i ++){
-                addOneImage("result",result[i])
-            }
-        }
+            });
 
-
-        function addImage1 (command){
-            var img = document.createElement("img");
-            img.src=table[1]
-            //console.log(img.src)
-
-            //console.log("Call addimage1")
-            tempResult.appendChild(img)
-        }
-        function addImage2(){
-            for(let i= 1 ; i < 10 ; i++){
-                ;//addOneImage("result",i)
-            }
-            let list = ["LP","RP","LK","RK"]
-
-            for (let i = 0; i < 4 ; i ++){
-                addOneImage("result",list[i])
-
-            }
-            //console.log("Call addimage2")
-        }
-
-        function addImageButton(cell, url, className, id, text, tooltip, clickFunction) {
-            var btn = document.createElement("button");
-            if(className != null) btn.className = className;
-            if(url != null) btn.style.backgroundImage = "url('" + url + "')";
-            if(id != null) btn.id = id;
-            if(text != null) btn.innerText = text;
-            if(tooltip != null) {
-                var spanTag = document.createElement("span");
-                spanTag.className = "tooltip-text";
-                spanTag.innerText = tooltip;
-
-                btn.appendChild(spanTag);
-            }
         }
     
     </script>
+    <script src="./js/html2canvas.min1.4.1.js" type="text/javascript"></script>
+    <script src="js/commandImage.js" type="text/javascript"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
 </body>
+
+
 </html>
