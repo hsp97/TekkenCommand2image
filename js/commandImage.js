@@ -116,7 +116,7 @@ function addOneImage(resultId, command){
     }
     else{
         child = document.createElement('span');
-        child.className = "mx-2 h5 btn btn-outline-danger"
+        child.className = "misc_button"
         child.innerText = command
         child.disabled = true
         
