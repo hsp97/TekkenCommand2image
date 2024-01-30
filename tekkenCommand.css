@@ -1,0 +1,15 @@
+
+.misc_button {
+    color: seashell;
+    background-color: #990000;
+    border-radius: 8px;
+    border: none;
+    text-shadow:  2px 2px 7px #000000aa;
+    width: auto;
+    height: 25px;
+    font-weight: bold;
+    padding: 0px 15px;
+    vertical-align: middle;
+    margin: 2px;
+    display: inline-block;
+  }

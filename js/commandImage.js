@@ -11,11 +11,25 @@ let table = {
     AL:"images/c6.png",
     AR:"images/c11.png",
     'LP+RK':"images/c10.png",
+    'RK+LP':"images/c10.png",
     'RP+LK':"images/c7.png",
+    'LK+RP':"images/c7.png",
     'LP+AK':"images/c14.png",
+    'AK+LP':"images/c14.png",
+    'AL+RK':"images/c14.png",
+    'RK+AL':"images/c14.png",
     'RP+AK':"images/c15.png",
+    'AK+RP':"images/c15.png",
+    'LK+AR':"images/c15.png",
+    'AR+LK':"images/c15.png",
     'AP+LK':"images/c8.png",
+    'LK+AP':"images/c8.png",
+    'AL+RP':"images/c8.png",
+    'RP+AL':"images/c8.png",
     'AP+RK':"images/c12.png",
+    'RK+AP':"images/c12.png",
+    'AR+LP':"images/c12.png",
+    'LP+AR':"images/c12.png",
     'ALL':"images/c16.png",
     1:"images/w1.png",
     2:"images/w2.png",
@@ -92,7 +106,7 @@ function addOneImage(resultId, command){
     }
     else if (command == "T"){
         child = document.createElement('span');
-        child.className = "mx-2 h5 btn btn-outline-danger"
+        child.className = "misc_button"
         child.innerText = '토네이도'
     }
     else if (command == '▶'){
@@ -165,13 +179,15 @@ function processCommandLine(commandLine){
                 }
                 else if (['-',' '].includes(cur)){
                     // 구분자리스트 일단 -만 넣었음. 공백이 숫자로 걸렸는데 그냥 리스트 만들어서 해결
+                    let isflush = false
                     if (notSymbolList.length > 0){
                             const notSymbolWord = notSymbolList.join("")
                             console.log(notSymbolWord)
                             commandElementList.push(notSymbolWord)
                             notSymbolList = []
-                        }                       
-                    if (recentElement != "▶"){
+                            isflush = true
+                    }                       
+                    if (isflush == true || recentElement != "▶"){
                         
                         commandElementList.push("▶")
                         recentElement = "▶"
