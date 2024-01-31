@@ -43,7 +43,7 @@ let table = {
     9:"images/w9.png",
 }
 
-function addResultElement(resultNum){
+function addResultElement(resultNum,title){
     let resultId= 'result'+ String(resultNum);
     let resultList = document.getElementById('resultList');
 
@@ -51,14 +51,15 @@ function addResultElement(resultNum){
     let resultElement = document.createElement('div');
     resultElement.className = "my-4"
     
-    let label = document.createElement('span')
-    label.className = "input-group-text"
-    label.innerHTML =resultNum
+    let label = document.createElement('div')
+    label.className = "h3 border border border-3 border-dark "
+    label.style="t cext-align:enter; background-color: white; "
+    label.innerHTML = resultNum + ".  "+ title
     resultElement.appendChild(label)
 
     let resultContent = document.createElement('div')
     resultContent.id = resultId
-    resultContent.className="p-2 my-3 border border-1 border-dark"
+    resultContent.className="p-2 my-3 "
     resultElement.appendChild(resultContent)
 
     let downloadButton = document.createElement('button')
@@ -294,11 +295,17 @@ function drawAllImage(){
     const len = resultList.length
     let downloadFuncList = []
 
+    let resultIndex = 1 
     for (let i = 0; i < len; i ++){
-        let [curResultId,curDownloadFunc] = addResultElement(i)
         let curCommandLine = resultList[i]
-        drawImage(curResultId, curCommandLine)
-        downloadFuncList.push(curDownloadFunc)
+        if (resultList[i].length > 0 ){
+            
+            let [curResultId,curDownloadFunc] = addResultElement(i,curCommandLine)
+            console.log(resultList[i], resultList[i].length)
+            drawImage(curResultId, curCommandLine)
+            downloadFuncList.push(curDownloadFunc)
+        }
+        else{}
     }
 
     let downloadAllBtn = document.getElementById('downloadAll');
