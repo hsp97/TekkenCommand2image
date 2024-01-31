@@ -53,14 +53,21 @@ function addResultElement(resultNum,title){
     
     let label = document.createElement('div')
     label.className = "h3 border border border-3 border-dark "
-    label.style="t cext-align:enter; background-color: white; "
+    label.style="text-align:center; background-color: white; "
     label.innerHTML = resultNum + ".  "+ title
     resultElement.appendChild(label)
 
+    let resultContentCotainer = document.createElement('div')
+    resultContentCotainer.className = "my-2"
+
     let resultContent = document.createElement('span')
     resultContent.id = resultId
-    resultContent.className="p-2 my-3 "
-    resultElement.appendChild(resultContent)
+    resultContent.className="py-3 "
+    
+
+    resultContentCotainer.appendChild(resultContent)
+
+    resultElement.appendChild(resultContentCotainer)
 
     let downloadButton = document.createElement('button')
     downloadButton.className= "btn btn-success"
