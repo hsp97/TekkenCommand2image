@@ -57,7 +57,7 @@ function addResultElement(resultNum,title){
     label.innerHTML = resultNum + ".  "+ title
     resultElement.appendChild(label)
 
-    let resultContent = document.createElement('div')
+    let resultContent = document.createElement('span')
     resultContent.id = resultId
     resultContent.className="p-2 my-3 "
     resultElement.appendChild(resultContent)
