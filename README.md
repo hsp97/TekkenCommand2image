@@ -15,5 +15,5 @@ https://anthem53.github.io/TekkenCommand2image/
 # TODO 
 
 1. 사용법을 홈페이지 내에서 보일 수 있도록. 디자인 만들기
-2. 길이 0 짜리 스트링은 제외하는 것도 넣으면 좋을듯.
+2. 따닥입력도 도입하기
    
