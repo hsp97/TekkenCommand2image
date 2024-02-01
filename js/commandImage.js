@@ -43,6 +43,10 @@ let table = {
     9:"images/w9.png",
 }
 
+let keywordTable = {
+    "벽꽝": 2,
+}
+
 function addResultElement(resultNum,title){
     let resultId= 'result'+ String(resultNum);
     let resultList = document.getElementById('resultList');
@@ -149,6 +153,34 @@ function clearAllImage(){
     }
 }
 
+function checkKeywordTable(i,len,commandInputContent , notSymbolList,commandElementList ){
+
+    for (let key in keywordTable){
+        let wordLen = keywordTable[key]
+        if (i + wordLen <= len){
+            const temp = commandInputContent.substr(i,wordLen)
+
+            if (temp in  keywordTable){
+                if (notSymbolList.length > 0){
+                    const notSymbolWord = notSymbolList.join("")
+                    console.log(notSymbolWord)
+                    commandElementList.push(notSymbolWord)
+                    notSymbolList = []
+                }
+                doneIndex = i + wordLen
+                commandElementList.push(temp)
+                recentElement = temp
+                return [true, doneIndex,recentElement]
+            }
+            else{}
+
+        }
+        else{}
+    }
+
+    return [false,undefined,undefined]
+}
+
 function processCommandLine(commandLine){
     
     commandInputContent = commandLine
@@ -187,16 +219,11 @@ function processCommandLine(commandLine){
                 }
                 else if (['-',' '].includes(cur)){
                     // 구분자리스트 일단 -만 넣었음. 공백이 숫자로 걸렸는데 그냥 리스트 만들어서 해결
-                    let isflush = false
                     if (notSymbolList.length > 0){
-                            const notSymbolWord = notSymbolList.join("")
-                            console.log(notSymbolWord)
-                            commandElementList.push(notSymbolWord)
-                            notSymbolList = []
-                            isflush = true
-                    }                       
-                    if (isflush == true || recentElement != "▶"){
-                        
+                        continue
+                    } 
+                    if (recentElement != "▶"){
+                              
                         commandElementList.push("▶")
                         recentElement = "▶"
                     }
@@ -264,6 +291,16 @@ function processCommandLine(commandLine){
                         else{
                             ;//console.log(i,cur)
                         }
+                        
+                        let [isKeyword, newDoneIndex, newRecentElement ] = checkKeywordTable(i,len,commandInputContent , notSymbolList,commandElementList )
+                        if (isKeyword == true){
+                            console.log("keywordTEST", newDoneIndex,newRecentElement)
+                            doneIndex = newDoneIndex
+                            recentElement = newRecentElement
+
+                            break
+                        }
+
                         
                         notSymbolList.push(cur)
                         doneIndex = i
