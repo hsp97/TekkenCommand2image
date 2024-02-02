@@ -66,7 +66,8 @@ function addResultElement(resultNum,title){
 
     let resultContent = document.createElement('span')
     resultContent.id = resultId
-    resultContent.className="py-3 "
+    //resultContent.className="py-3"
+    resultContent.style="padding-top:13px;padding-bottom:18px"
     
 
     resultContentCotainer.appendChild(resultContent)
