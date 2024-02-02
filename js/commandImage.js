@@ -217,19 +217,25 @@ function processCommandLine(commandLine){
                     
                     doneIndex = i
                 }
-                else if (['-',' '].includes(cur)){
+                else if (cur == '-'){
                     // 구분자리스트 일단 -만 넣었음. 공백이 숫자로 걸렸는데 그냥 리스트 만들어서 해결
-                    if (notSymbolList.length > 0){
-                        continue
-                    } 
-                    if (recentElement != "▶"){
-                              
-                        commandElementList.push("▶")
-                        recentElement = "▶"
+                    if (notSymbolList.length >0) {
+                        const notSymbolWord = notSymbolList.join("")
+                        console.log(notSymbolWord)
+                        commandElementList.push(notSymbolWord)
+                        notSymbolList = []
                     }
-                    else{}
+
+                            
+                    commandElementList.push("▶")
+                    recentElement = "▶"
+
                     
                     doneIndex = i
+                }
+                else if (cur == " "){
+                    console.log(notSymbolList)
+                    continue
                 }
                 else{
                     while (1){
