@@ -14,6 +14,5 @@ https://anthem53.github.io/TekkenCommand2image/
 
 # TODO 
 
-1. 사용법을 홈페이지 내에서 보일 수 있도록. 디자인 만들기
-2. 따닥입력도 도입하기
+1. - 
    
