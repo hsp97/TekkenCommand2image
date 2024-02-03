@@ -45,6 +45,9 @@ let table = {
 
 let keywordTable = {
     "벽꽝": 2,
+    "히트버스트":5,
+    "레아":2,
+
 }
 
 function addResultElement(resultNum,title){
@@ -79,8 +82,6 @@ function addResultElement(resultNum,title){
     downloadButton.innerText = "다운로드"
     
     let downloadFunction = function(){
-        console.log("ONCLICK")
-
 
         html2canvas(document.getElementById(resultId),
             {
@@ -122,10 +123,17 @@ function addOneImage(resultId, command){
         child.className = "misc_button"
         child.innerText = '토네이도'
     }
-    else if (command == '▶'){
+    else if ('▶'== command){
         child = document.createElement('span');
         child.className = "mx-2 h5"
-        child.innerText = '▶'
+        child.style="color:black"
+        child.innerText = command
+    }
+    else if (['[',']','~'].includes(command)){
+        child = document.createElement('span');
+        child.className = "h2 mx-1"
+        child.style="color:black"
+        child.innerText = command
     }
     else{
         child = document.createElement('span');
@@ -138,13 +146,6 @@ function addOneImage(resultId, command){
     result.appendChild(child)
 }
 
-function clearImage(){
-    let result = document.getElementById("result");
-
-    while (result.firstChild) {
-        result.removeChild(result.firstChild);
-    }
-}
 
 function clearAllImage(){
     let resultList = document.getElementById("resultList");
@@ -192,12 +193,35 @@ function processCommandLine(commandLine){
     let doneIndex = -1
     let recentElement = undefined
     let notSymbolList = []
+    let isString = false
     for (let i = 0 ; i < len; i++){
         if (i > doneIndex){
             let cur = commandInputContent[i]
         // cur is number 12346789
             //구분자 예외 처리
-            if( ['1','2','3','4','6','7','8','9'].includes(cur) ){
+            if (cur == '"' ){
+                if (isString == false){
+                    isString = true
+                    continue
+                }
+                else{
+                    if (notSymbolList.length > 0){
+                        const notSymbolWord = notSymbolList.join("")
+                        console.log(notSymbolWord)
+                        commandElementList.push(notSymbolWord)
+                        notSymbolList = []
+                    }
+                    isString = false
+                    continue
+                }
+            }
+            if (isString == true){
+                notSymbolList.push(cur)
+                doneIndex = i
+                continue
+            }
+
+            if( ['1','2','3','4','6','7','8','9','[',']','~'].includes(cur) ){
                 if (notSymbolList.length > 0){
                     const notSymbolWord = notSymbolList.join("")
                     console.log(notSymbolWord)
@@ -308,7 +332,6 @@ function processCommandLine(commandLine){
                             break
                         }
 
-                        
                         notSymbolList.push(cur)
                         doneIndex = i
                         console.log("NOTSYMBOLIST",notSymbolList, commandElementList)
