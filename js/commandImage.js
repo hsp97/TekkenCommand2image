@@ -105,7 +105,7 @@ function addResultElement(resultNum,title){
 
                 const link = document.createElement("a");
                 link.href = image;
-                link.download = "paintJS.png";
+                link.download = "tekkenCommandImage.png";
                 link.click();
           
         });
@@ -205,8 +205,7 @@ function processCommandLine(commandLine){
     for (let i = 0 ; i < len; i++){
         if (i > doneIndex){
             let cur = commandInputContent[i]
-        // cur is number 12346789
-            //구분자 예외 처리
+            // 문자열은 예외처리 
             if (cur == '"' ){
                 if (isString == false){
                     isString = true
@@ -223,6 +222,7 @@ function processCommandLine(commandLine){
                     continue
                 }
             }
+
             if (isString == true){
                 notSymbolList.push(cur)
                 doneIndex = i
