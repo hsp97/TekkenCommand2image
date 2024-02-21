@@ -47,6 +47,13 @@ let keywordTable = {
     "벽꽝": 2,
     "히트버스트 캔슬":8,
     "히트버스트":5,
+    "히트 버스트":6,
+    "월바운드":4,
+    "월 바운드":5,
+    "월블래스트":5,
+    "월 블래스트":6,
+    "월블레스트":5,
+    "월 블레스트":6,
     "레아":2,
     "레이지 아츠": 6,
     "레이지아츠":5,
@@ -55,7 +62,6 @@ let keywordTable = {
     "바운드":3,
     "히트 인게이저":7,
     "히트인게이저":6,
-
 }
 
 function addResultElement(resultNum,title){
@@ -177,7 +183,7 @@ function checkKeywordTable(i,len,commandInputContent , notSymbolList,commandElem
                     commandElementList.push(notSymbolWord)
                     notSymbolList = []
                 }
-                doneIndex = i + wordLen
+                doneIndex = i + wordLen -1
                 commandElementList.push(temp)
                 recentElement = temp
                 return [true, doneIndex,recentElement]
