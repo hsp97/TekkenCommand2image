@@ -1,5 +1,6 @@
 //import  html2canvas  from './html2canvas.min1.4.1.js';
 
+let commandTable = getCommandTable();
 
 let table = {
     LP:"images/c2.png",
