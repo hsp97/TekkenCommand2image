@@ -54,10 +54,8 @@ function prepareCommandpara(para){
 }
 
 
-function processWord2 (word){
-    
-    word.trim()
-    print(word,typeof(word))
+function processWord (word){
+    word = word.trim()
 
     let wordLen = word.length
     let wordResult = []
@@ -71,7 +69,7 @@ function processWord2 (word){
                 pushPlainTextList(plainTextList , wordResult)
                 plainTextList = []
             }
-            print(plainTextList, word[i])
+            
             wordResult.push([arrowTable[word[i]],elemType.FILE])
             i += 1
         }
@@ -128,7 +126,8 @@ function processWord2 (word){
  * 
  * @param {*} line 
  */
-function processCommandLine2(line){
+function processCommandLine(line){
+    
     wordList = line.split('-')
     let lineResult = []
 
@@ -142,20 +141,23 @@ function processCommandLine2(line){
         else{
             lineResult.push(["▶"])
         }
-        lineResult.push(processWord2(word))
+        lineResult.push(processWord(word))
     }
-    print(lineResult)
+    
     return lineResult;
 }
 
 
-function processCommandPara2(para){
+function processCommandPara(){
     let commandInputContent = commandInput.value
     
     let commandLineList = prepareCommandpara(commandInputContent)
     let resultList = []
-    for (const commandLine in commandLineList){
-        resultList.push(processCommandLine2(commandLine))
+    for (const commandLineIndex in commandLineList){
+        const commandLine = commandLineList[commandLineIndex]
+        let lineResult = processCommandLine(commandLine) 
+        print(lineResult)
+        resultList.push(lineResult)
     }
 
     return resultList;
@@ -171,8 +173,9 @@ function keyProcessTest(){
     console.log("commandProcess START")
 
     //print(processWord2("달려가서 부보 RP "))
-    print(processCommandLine2("금계 LP2 - 부보 RP"))
+    print(processCommandLine("금계 LP2 - 부보 RP"))
     console.log("commandProcess End")
+
 }
 
 init()
