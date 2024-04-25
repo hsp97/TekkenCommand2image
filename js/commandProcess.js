@@ -173,7 +173,7 @@ function processCommandLine(line){
 
 /**
  * 코맨트 : 최종적으로 외부에선 얘 하나 호출하면 처리된 결과값을 받을 수 있음.
- * @returns 
+ * @returns list of [처리된 라인값, 원본]
  */
 function processCommandPara(){
     const commandInput = document.getElementById("commandInput")
@@ -183,8 +183,11 @@ function processCommandPara(){
     let resultList = []
     for (const commandLineIndex in commandLineList){
         const commandLine = commandLineList[commandLineIndex]
-        let lineResult = processCommandLine(commandLine) 
-        resultList.push([lineResult,commandLine])
+        if (commandLine != ""){
+            let lineResult = processCommandLine(commandLine) 
+            resultList.push([lineResult,commandLine])
+        }
+        
     }
 
     return resultList;
