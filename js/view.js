@@ -6,46 +6,14 @@ function clearAllImage(){
     }
 }
 
-function drawAllImage(){
-    clearAllImage()
-    const resultList = processCommandPara()
-    const len = resultList.length
-    let downloadFuncList = []
-
-    let resultIndex = 1 
-    for (let i = 0; i < len; i ++){
-        let curCommandLine = resultList[i]
-        if (resultList[i].length > 0 ){
-            
-            let [curResultId,curDownloadFunc] = addResultElement(i,curCommandLine)
-            console.log(resultList[i], resultList[i].length)
-            drawImage(curResultId, curCommandLine)
-            downloadFuncList.push(curDownloadFunc)
-        }
-        else{}
-    }
-
-    let downloadAllBtn = document.getElementById('downloadAll');
-    downloadAllBtn.onclick = function(){
-        const len = downloadFuncList.length
-        for (let i = 0 ; i < len; i++){
-            downloadFuncList[i]();
-        }
-    }
-}
-
-
-function drawImage(curResultId, curCommandLine){
-    
-    const result = processCommandLine(curCommandLine)
-
-    const len = result.length
-    for (let i = 0; i < len; i ++){
-        addOneImage(curResultId,result[i])
-    }
-}
-
-function addResultElement(resultNum,title){
+/**
+ * @see 라인의 결과가 있을 html 요소를 만들어주는 함수
+ * @see 그와 더불어 다운로드까지 구현
+ * @param {*} resultNum 
+ * @param {*} title 
+ * @returns 
+ */
+function addResultElement(resultNum,title,rawLine){
     let resultId= 'result'+ String(resultNum);
     let resultList = document.getElementById('resultList');
 
@@ -56,7 +24,7 @@ function addResultElement(resultNum,title){
     let label = document.createElement('div')
     label.className = "h3 border border border-3 border-dark "
     label.style="text-align:center; background-color: white; "
-    label.innerHTML = resultNum + ".  "+ title
+    label.innerHTML = rawLine
     resultElement.appendChild(label)
 
     let resultContentCotainer = document.createElement('div')
@@ -64,7 +32,6 @@ function addResultElement(resultNum,title){
 
     let resultContent = document.createElement('span')
     resultContent.id = resultId
-    //resultContent.className="py-3"
     resultContent.style="padding-top:13px;padding-bottom:18px"
     
 
@@ -104,39 +71,75 @@ function addResultElement(resultNum,title){
     return [resultId, downloadFunction]
 }   
 
-function addOneImage(resultId, command){
-    let result = document.getElementById(resultId);
-    let child = undefined
+function drawImage(curResultId, curCommandLine){
+    
+    let result = document.getElementById(curResultId);
+    print("STart")
+    print(curCommandLine)
+    for (let lineIndex in curCommandLine){
+        const lineElem = curCommandLine[lineIndex]
 
-    if (command in table){
-        child = document.createElement('img');
-        child.crossorigin='anonymous'
-        child.src= table[command]
+        for (let wordIndex in lineElem){
+            const wordElem = lineElem[wordIndex]
+            const content = wordElem[0];
+            const type = wordElem[1];
+            print(content,type)
+            let child = undefined    
+            if (type == getElemType().SYMBOL){
+                child = document.createElement('span');
+                child.className = "mx-2 h5"
+                child.style="color:black"
+                child.innerText = content
+            }
+            else if (type == getElemType().FILE){
+                child = document.createElement('img');
+                child.crossorigin='anonymous'
+                child.src= content
+            }
+            else if (type == getElemType().PLAIN){
+                child = document.createElement('span');
+                child.className = "misc_button"
+                child.innerText = content
+            }
+            else{continue}
+
+            print(child)
+            result.appendChild(child)
+        }
+
     }
-    else if (command == "T"){
-        child = document.createElement('span');
-        child.className = "misc_button"
-        child.innerText = '토네이도'
-    }
-    else if ('▶'== command){
-        child = document.createElement('span');
-        child.className = "mx-2 h5"
-        child.style="color:black"
-        child.innerText = command
-    }
-    else if (['[',']','~'].includes(command)){
-        child = document.createElement('span');
-        child.className = "h2 mx-1"
-        child.style="color:black"
-        child.innerText = command
-    }
-    else{
-        child = document.createElement('span');
-        child.className = "misc_button"
-        child.innerText = command
-        child.disabled = true
+    print("END")
+
+}
+
+
+/**
+ * @see 입력 커맨드를 처리한 결과를 그리고 다운로드 버튼을 생성함.
+ * @param {*} commmandParaResult 
+ */
+function executeDraw(commmandParaResult){
+    clearAllImage()
+    
+    const len = commmandParaResult.length
+    
+    let downloadFuncList = []
+
+    for (let i = 0; i < len; i ++){
+        let curCommandLineElem = commmandParaResult[i]
+        let curCommandLine = curCommandLineElem[0]
+        let curRawLine = curCommandLineElem[1]
+        
+        let [curResultId,curDownloadFunc] = addResultElement(i,curCommandLine,curRawLine)
+        drawImage(curResultId, curCommandLine)
+        downloadFuncList.push(curDownloadFunc)
         
     }
 
-    result.appendChild(child)
+    let downloadAllBtn = document.getElementById('downloadAll');
+    downloadAllBtn.onclick = function(){
+        const len = downloadFuncList.length
+        for (let i = 0 ; i < len; i++){
+            downloadFuncList[i]();
+        }
+    }
 }

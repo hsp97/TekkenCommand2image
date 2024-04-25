@@ -163,7 +163,7 @@ function processCommandLine(line){
             isFirst = false
         }
         else{
-            lineResult.push(["▶",ElemType.SYMBOL])
+            lineResult.push([["▶",ElemType.SYMBOL]])
         }
         lineResult.push(processWord(word))
     }
@@ -176,6 +176,7 @@ function processCommandLine(line){
  * @returns 
  */
 function processCommandPara(){
+    const commandInput = document.getElementById("commandInput")
     let commandInputContent = commandInput.value
     
     let commandLineList = prepareCommandpara(commandInputContent)
@@ -183,8 +184,7 @@ function processCommandPara(){
     for (const commandLineIndex in commandLineList){
         const commandLine = commandLineList[commandLineIndex]
         let lineResult = processCommandLine(commandLine) 
-        print(lineResult)
-        resultList.push(lineResult)
+        resultList.push([lineResult,commandLine])
     }
 
     return resultList;
@@ -193,14 +193,14 @@ function processCommandPara(){
 
 function init(){
     
-    initSymbolTable(['[',']','~','T'])
+    initSymbolTable(['[',']','~'])
 }
 
 function keyProcessTest(){
     console.log("commandProcess START")
 
-    print(processWord("달려가서 부보 RP"))
-    //print(processCommandLine("금계 LP2 - 부보 RP"))
+    //print(processWord("달려가서 부보 RP"))
+    print(processCommandLine("금계 LP2 - 부보 RP"))
     console.log("commandProcess End")
 
 }
