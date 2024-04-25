@@ -1,9 +1,12 @@
 
-const elemType = {
+const ElemType = {
     FILE: "file" ,
     SYMBOL: "symbol",
     BLANK: "blank" ,
     PLAIN: "plain"
+}
+function getElemType(){
+    return ElemType
 }
 
 
@@ -46,7 +49,7 @@ function pushPlainTextList(plainTextList , wordResult){
     if (plainTextList.length > 0 ){
         let target= plainTextList.join("")
         target = target.trim()
-        wordResult.push([target,elemType.PLAIN])
+        wordResult.push([target,ElemType.PLAIN])
     }
 
     return []
@@ -86,13 +89,13 @@ function processWord (word){
         if (word[i] in arrowTable){ //word.slice(i,i+1)
             plainTextList = pushPlainTextList(plainTextList,wordResult)
             
-            wordResult.push([arrowTable[word[i]],elemType.FILE])
+            wordResult.push([arrowTable[word[i]],ElemType.FILE])
             i += 1
         }
         else if (word[i] in symbolList){
             plainTextList = pushPlainTextList(plainTextList,wordResult)
 
-            wordResult.push([word[i],elemType.SYMBOL])
+            wordResult.push([word[i],ElemType.SYMBOL])
 
         }
         else if (word.slice(i,i+2) in buttonTable){
@@ -115,7 +118,7 @@ function processWord (word){
 
             curButton = buttons.join("")
             savetarget = processButtonElement(curButton)
-            wordResult.push([savetarget,elemType.FILE])
+            wordResult.push([savetarget,ElemType.FILE])
 
         }
         else if (word[i] == " "){
@@ -124,11 +127,12 @@ function processWord (word){
                     plainTextList.push(word[i])
                 }
                 else{
-                    wordResult.push([word[i],elemType.BLANK])
+                    ;//wordResult.push([word[i],ElemType.BLANK])
                 }
-                i += 1
+                
             }
             else{;}
+            i += 1
         }
         else{ 
             plainTextList.push(word[i])
@@ -137,7 +141,7 @@ function processWord (word){
         }
     }
 
-
+    plainTextList = pushPlainTextList(plainTextList,wordResult)
     return wordResult
 }
 
@@ -159,7 +163,7 @@ function processCommandLine(line){
             isFirst = false
         }
         else{
-            lineResult.push(["▶"])
+            lineResult.push(["▶",ElemType.SYMBOL])
         }
         lineResult.push(processWord(word))
     }
@@ -189,7 +193,7 @@ function processCommandPara(){
 
 function init(){
     
-    initSymbolTable(['[',']','~','N','T'])
+    initSymbolTable(['[',']','~','T'])
 }
 
 function keyProcessTest(){
