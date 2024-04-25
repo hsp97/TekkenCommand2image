@@ -89,6 +89,12 @@ function processWord (word){
             wordResult.push([arrowTable[word[i]],elemType.FILE])
             i += 1
         }
+        else if (word[i] in symbolList){
+            plainTextList = pushPlainTextList(plainTextList,wordResult)
+
+            wordResult.push([word[i],elemType.SYMBOL])
+
+        }
         else if (word.slice(i,i+2) in buttonTable){
             plainTextList = pushPlainTextList(plainTextList,wordResult)
 
@@ -161,7 +167,10 @@ function processCommandLine(line){
     return lineResult;
 }
 
-
+/**
+ * 코맨트 : 최종적으로 외부에선 얘 하나 호출하면 처리된 결과값을 받을 수 있음.
+ * @returns 
+ */
 function processCommandPara(){
     let commandInputContent = commandInput.value
     
