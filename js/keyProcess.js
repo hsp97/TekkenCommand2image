@@ -46,23 +46,13 @@ function processButtonElement(command){
 }
 
 
+/**
+ * 버튼 입력 8가지 경우 재활용하기 위해 만듦. commandProcess.js에서 쓰임
+ * @returns 
+ */
 function getButtonTable(){
     return button2BitTable
 }
 
 
 
-
-function init(){
-
-}
-
-function debug_keyProcess(){
-    console.log("keyProcess debug START")
-    processButtonElement("RK+AL")
-    console.log("keyProcess debug END")
-}
-
-
-init()
-//debug_keyProcess()
