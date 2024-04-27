@@ -1,39 +1,11 @@
 
-const ElemType = {
-    FILE: "file" ,
-    SYMBOL: "symbol",
-    BLANK: "blank" ,
-    PLAIN: "plain"
-}
-function getElemType(){
-    return ElemType
-}
+const ElemType = getElemType()
 
+const arrowTable = getArrowTable()
 
-const arrowTable = {
-    1:"images/w1.png",
-    2:"images/w2.png",
-    3:"images/w3.png",
-    4:"images/w4.png",
-    N:"images/w5.png",
-    5:"images/w5.png",
-    6:"images/w6.png",
-    7:"images/w7.png",
-    8:"images/w8.png",
-    9:"images/w9.png",
-}
+const buttonTable = getButton2BitTable()
 
-const buttonTable = getButtonTable()
-
-const symbolList = {}
-
-function initSymbolTable (symbols){
-
-    for (const symbol in symbols){
-        symbolList[symbol] =  symbol
-    }
-
-}
+const symbolTable = getSymbolTable()
 
 
 /**
@@ -92,10 +64,11 @@ function processWord (word){
             wordResult.push([arrowTable[word[i]],ElemType.FILE])
             i += 1
         }
-        else if (word[i] in symbolList){
+        else if (word[i] in symbolTable){
             plainTextList = pushPlainTextList(plainTextList,wordResult)
 
             wordResult.push([word[i],ElemType.SYMBOL])
+            i += 1
 
         }
         else if (word.slice(i,i+2) in buttonTable){
@@ -196,13 +169,12 @@ function processCommandPara(){
 
 function init(){
     
-    initSymbolTable(['[',']','~'])
 }
 
 function keyProcessTest(){
+    if (isDebug() == false ){return}
     console.log("commandProcess START")
 
-    //print(processWord("달려가서 부보 RP"))
     print(processCommandLine("금계 LP2 - 부보 RP"))
     console.log("commandProcess End")
 
