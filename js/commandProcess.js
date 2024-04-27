@@ -176,7 +176,59 @@ function keyProcessTest(){
     
     console.log("commandProcess START")
 
-    print(processCommandLine("금계 LP2 - 부보 RP"))
+    answer= [
+        [
+            "부보",
+            "plain"
+        ],
+        [
+            "images/w2.png",
+            "file"
+        ],
+        [
+            "images/w3.png",
+            "file"
+        ],
+        [
+            "images/w6.png",
+            "file"
+        ],
+        [
+            "[",
+            "symbol"
+        ],
+        [
+            "lkrk",
+            "plain"
+        ],
+        [
+            "]",
+            "symbol"
+        ]
+    ]
+    result = processWord("부보   236[lkrk]")
+    testProcessWordResult = true
+    while (true){
+        if (answer.length != result.length){
+            testProcessWordResult = false;
+            break
+        }
+
+        for (var i  = 0 ; i < answer.length ; i ++){
+            if (!(answer[i][0] == result[i][0] && answer[i][1] == result[i][1])){
+                testProcessWordResult = false
+                break
+            }
+        }
+
+        break
+    }
+
+    if (testProcessWordResult == false){
+        print("Process Word function has something wrong")
+    }
+
+
     console.log("commandProcess End")
 
 }
