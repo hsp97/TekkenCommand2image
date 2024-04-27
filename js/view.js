@@ -74,8 +74,7 @@ function addResultElement(resultNum,title,rawLine){
 function drawImage(curResultId, curCommandLine){
     
     let result = document.getElementById(curResultId);
-    print("STart")
-    print(curCommandLine)
+    
     for (let lineIndex in curCommandLine){
         const lineElem = curCommandLine[lineIndex]
 
@@ -83,7 +82,7 @@ function drawImage(curResultId, curCommandLine){
             const wordElem = lineElem[wordIndex]
             const content = wordElem[0];
             const type = wordElem[1];
-            print(content,type)
+            
             let child = undefined    
             if (type == getElemType().SYMBOL){
                 child = document.createElement('span');
@@ -103,12 +102,10 @@ function drawImage(curResultId, curCommandLine){
             }
             else{continue}
 
-            print(child)
             result.appendChild(child)
         }
 
     }
-    print("END")
 
 }
 
