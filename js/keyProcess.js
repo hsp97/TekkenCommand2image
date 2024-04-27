@@ -1,4 +1,4 @@
-button2BitTable = getButton2BitTable()
+const button2BitTable = getButton2BitTable()
 
 
 const bit2FileTable = getBit2FileTable()

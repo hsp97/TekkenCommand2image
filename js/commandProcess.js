@@ -172,6 +172,7 @@ function init(){
 }
 
 function keyProcessTest(){
+    if (isDebug() == false ){return}
     console.log("commandProcess START")
 
     print(processCommandLine("금계 LP2 - 부보 RP"))
@@ -180,4 +181,4 @@ function keyProcessTest(){
 }
 
 init()
-//keyProcessTest()
+keyProcessTest()

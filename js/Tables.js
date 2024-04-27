@@ -108,7 +108,6 @@ function initSymbolTable (symbols){
 initSymbolTable(_symbolList)
 
 function getSymbolTable(){
-    print(_symbolTable)
     return _symbolTable
 }
 

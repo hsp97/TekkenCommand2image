@@ -3,13 +3,14 @@
  * console.log를 사용하고 있어서 강제 개행 되는건 슬픈 포인트
  */
 
-let isDebug = true;
+let debugOption = false;
 
 function setDebug(option){
-    isDebug = option
+    
+    debugOption = option
 }
-function getDebug(){
-    isDebug
+function isDebug(){
+    return debugOption
 }
 
 
