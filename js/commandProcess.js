@@ -78,6 +78,7 @@ function processWord (word){
             i += 2
 
             while (i < wordLen){
+            
                 if (word[i] == "+"){
                     buttons.push(word[i])
                     i += 1
@@ -151,6 +152,9 @@ function processCommandLine(line){
 function processCommandPara(){
     const commandInput = document.getElementById("commandInput")
     let commandInputContent = commandInput.value
+
+    deleteCookie()
+    setCookie(commandInputContent)
     
     let commandLineList = prepareCommandpara(commandInputContent)
     let resultList = []
