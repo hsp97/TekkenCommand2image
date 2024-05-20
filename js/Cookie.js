@@ -15,7 +15,7 @@ function setCookie(cookieNum){
     let cookieCotent = cookieName+"="+cookieValue 
                     + "; expires="+ date
                     + "; secure"
-
+    
     document.cookie=cookieCotent
     console.log(cookieValue,cookieName,cookieCotent)
 }
