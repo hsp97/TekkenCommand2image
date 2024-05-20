@@ -12,25 +12,14 @@ function setCookie(cookieNum){
 
     let date = new Date(Date.now() + 86400e3);       
     
-    let cookieCotent = cookieName+"="+cookieValue + "; expires="+ date
+    let cookieCotent = cookieName+"="+cookieValue 
+                    + "; expires="+ date
+                    + "; secure"
 
     document.cookie=cookieCotent
     console.log(cookieValue,cookieName,cookieCotent)
 }
 
-function setCookieTEST(cookieNum){
-    let date = new Date(Date.now() + 86400e3);
-    let content = "rprprp\nlklklk"
-    //let content = "6n23rp"
-    content = content.replaceAll("\n","{}")
-    const cookieName = "RecentCommand"// + cookieNum.toString()
-    let cookieValue = content
-    
-    let cookieCotent = cookieName+"="+cookieValue + "; expires="+ date
-
-    document.cookie=cookieCotent
-    console.log(cookieValue,cookieName)
-}
 
 function getCookieValue(){
     let baseCookieName = "RecentCommand"

@@ -12,6 +12,7 @@ let main = {
         executeDraw(commandParaResult)
     }
     , recent : function (){
+        
         setRecentCommand()
     }
 
