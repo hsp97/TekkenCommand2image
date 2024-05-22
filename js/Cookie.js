@@ -9,7 +9,7 @@ function getCommandInput(){
 function setCommandInput(contents){
     const commandInput = document.getElementById("commandInput")
     
-    contents = contents.replaceAll("{}","\n")
+    contents = contents.replaceAll("<br>","\n")
     
     commandInput.value = contents;
 
