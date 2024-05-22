@@ -153,7 +153,7 @@ function processCommandPara(){
     const commandInput = document.getElementById("commandInput")
     let commandInputContent = commandInput.value
 
-    deleteCookie()
+ 
     setCookie(commandInputContent)
     
     let commandLineList = prepareCommandpara(commandInputContent)
