@@ -3,6 +3,15 @@ function getCommandInput(){
     return commandInput.value
 }
 
+function setCommandInput(contents){
+    const commandInput = document.getElementById("commandInput")
+    commandInput.value = contents;
+
+}
+
+
+
+
 function setCookie(cookieNum){
 
     const cookieName = "RecentCommand";
