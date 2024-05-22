@@ -1,5 +1,5 @@
 const COOKIE_NAME = "RecentCommand"
-const MAX_COOKIE_NUM = 5
+const MAX_COOKIE_NUM = 7
 
 function getCommandInput(){
     const commandInput = document.getElementById("commandInput")
@@ -60,7 +60,7 @@ function getCookieList(){
             if (oldestName == undefined){
                 oldestName = name
             }
-            print(name, value)
+            //print(name, value)
             let cookieNum =Number(name.split("_")[1])
             result.push([name,cookieNum,value])
 
@@ -118,7 +118,34 @@ function setRecentCommandByNum(Num){
 }
 
 
-createCookie("test","1234456")
-getCookieList()
 
-setRecentCommandByNum(0)
+
+
+function setRecentCommandHistory(){
+    // [result,oldestName,lastestNum]
+    const cookieList= getCookieList()[0]
+    const commandHistoryList = document.getElementById("commandHistoryList");
+    //const commandHistoryList = document.getElementById("offcanvasHistory");
+    print(commandHistoryList.childNodes)
+    commandHistoryList.innerHTML = "";
+    
+    for (let i = 0 ; i < cookieList.length ; i++){
+        // [name, number, value] 
+        const cookie = cookieList[i]
+        const cookieValue = cookie[2]
+        //<button type="button" class="list-group-item list-group-item-action">A second button item</button>
+        let tempBtn = document.createElement("button")
+        tempBtn.type= "button"
+        tempBtn.className = "list-group-item list-group-item-action"
+        tempBtn.innerHTML = cookieValue
+        tempBtn.onclick = function(){ setCommandInput(cookieValue)}
+        
+        commandHistoryList.appendChild(tempBtn)
+
+        print("Call history function : ", cookie)
+        
+    }
+
+}
+
+

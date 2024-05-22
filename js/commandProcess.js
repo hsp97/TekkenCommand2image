@@ -153,8 +153,9 @@ function processCommandPara(){
     const commandInput = document.getElementById("commandInput")
     let commandInputContent = commandInput.value
 
- 
-    setCookie(commandInputContent)
+    if (commandInputContent.trim() != ""){
+        setCookie(commandInputContent)
+    }
     
     let commandLineList = prepareCommandpara(commandInputContent)
     let resultList = []
