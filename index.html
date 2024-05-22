@@ -12,67 +12,27 @@
 </head>
 <body class="pt-5"  style="background-color:#F0F3BD;">
     <div class='container d-flex justify-content-start'>
-        <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasGuide" aria-controls="offcanvasExample"> 가이드</button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="" aria-controls="offcanvasExample" id="btnCommandGuide" disabled> 가이드</button>
         <a class="btn btn-danger ms-2" href="https://forms.gle/YzGCJxmSvhmssZHdA" target="_blank"> 제보</a>
          
     </div>
     
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasGuide" aria-labelledby="offcanvasExampleLabel">
-        <div class="offcanvas-header">
-          <h2 class="offcanvas-title" id="offcanvasExampleLabel" class="guide_title"> 가이드 </h2>
-          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-          <div>
-            <h3 class="guide_title"> 커맨드 </h3>
-            <img src = 'images/tekkenCommandGuide.png' alt="Tekken command guide"/>
-          </div>
-          <div class="mb-4">
-            <h3 class="guide_title"> 예시 ~ 6n23rp </h3>
-
-                <img src = 'images/6n23rp.png' alt="초풍커맨드"/>
-                
-          </div>
-          <div class="mb-3">
-            <h3 class="guide_title mb-2"> 엔터 </h3>
-                엔터로 콤보를 구분함. 여러 콤보의 커맨드를 동시에 만들고 싶다면 엔터로 줄 바꾼후 입력한 뒤 이미지 변환 버튼 누르면 됨.
-                
-                <h4 class="guide_title mb-2"> 예시 </h4>    
-                <img src = 'images/enterExample.png' style="width: 20vw" alt="커맨드 번역 이미지"/>
-          </div>
-          <div class="mb-3">
-            <h3 class="guide_title mb-2"> 구분자 </h3>
-                커맨드와 커맨드를 구분자로 분류함. 구분자는 - 임.      
-          </div>
-          <div class="mb-3">
-            <h3 class="guide_title mb-2"> 대소문자 </h3>
-                대소문자 구분 없음.       
-          </div>
-
-          <div class="mb-3">
-            <h3 class="guide_title mb-2"> 교차 커맨드, 3~4버튼  </h3>
-                +로 구분하면 됨.
-          </div>
-
-          <div>
-            <h3 class="guide_title"> 입력 예시 </h3>
-            <div class="mb-3 border">
-              3rp - 6rp - 4lprk3- 진보 LK - 6RK - 금계 ap - T - 대시 6RK3 - 진보 AP
-            </div>
-            
-            <img src = 'images/tekkenCommandGuideExample2.png' style="width: auto" alt="커맨드 번역 이미지"/>
-          </div>
-          <div>
-            <h3 class="guide_title"> 입력 예시2 </h3>
-            <div class="mb-3 border">
-              벽꽝 - 4LPRK- 금계 LKRK - T - "앉았다 일어나면서" LPRKLK
-            </div>
-            
-            <img src = 'images/tekkenCommandGuideExample3.png' style="width: auto" alt="커맨드 번역 이미지"/>
-          </div>
-
+     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasHistory" aria-labelledby="offcanvasRightLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasRightLabel">최근 작성한 커맨드 목록</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="list-group" id="commandHistoryList">
+          <button type="button" class="list-group-item list-group-item-action">A second button item</button>
+          <button type="button" class="list-group-item list-group-item-action">A third button item</button>
+          <button type="button" class="list-group-item list-group-item-action">A fourth button item</button>
+          <button type="button" class="list-group-item list-group-item-action" disabled>A disabled button item</button>
         </div>
       </div>
+    </div>
+      
+
 
     <div class='d-flex justify-content-center'>
         <div class='flex-column  justify-content-center' style="text-align:center;">
@@ -81,7 +41,8 @@
                 <p><textarea style="width: 500px; max-width: 100vw" rows="10" id="commandInput"></textarea></p>
                 <button type="button" class="btn btn-outline-dark" id="btnExcute">이미지로 변환 </button>
                 <button type="button" class="btn btn-outline-dark" id="downloadAll"> 일괄 다운로드 </button>
-                <button type="button" class="btn btn-outline-dark" id="btnLoadRecent"> 최신 커맨드 로드 </button>
+                <button type="button" class="btn btn-outline-dark" data-bs-toggle="offcanvas" data-bs-target="#offcanvasHistory" aria-controls="offcanvasExample" id="btnLoadRecent"> 최신 커맨드 로드 </button>
+                
                 
             </form>
 

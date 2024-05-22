@@ -1,66 +1,149 @@
+const COOKIE_NAME = "RecentCommand"
+const MAX_COOKIE_NUM = 7
+
 function getCommandInput(){
     const commandInput = document.getElementById("commandInput")
     return commandInput.value
 }
 
-function setCookie(cookieNum){
+function setCommandInput(contents){
+    const commandInput = document.getElementById("commandInput")
+    commandInput.value = contents;
 
-    const cookieName = "RecentCommand";
-    let content = getCommandInput()    
-    content = content.replaceAll("\n","{}")
-    let cookieValue = content
+}
 
-    let date = new Date(Date.now() + 86400e3);       
-    
-    let cookieCotent = cookieName+"="+cookieValue 
-                    + "; expires="+ date
-                    + "; secure"
-    
-    document.cookie=cookieCotent
-    console.log(cookieValue,cookieName,cookieCotent)
+const COOKIE_OPTION = {
+    "expires" : 86400e3+Date.now(),
+    "secure" : true,
+    "SameSite" : "Strict",
+    "path" : "/"
 }
 
 
-function getCookieValue(){
-    let baseCookieName = "RecentCommand"
-    let cookieData = document.cookie;
+function mapNameValue(name,value){
+    return name + "="+value
+}
+function createCookie(name,value){
+    let cookieCotent = mapNameValue(name,value)
+        +"; expires=" + new Date(COOKIE_OPTION.expires)
+        +"; secure"
+        +"; path=" + COOKIE_OPTION.path
+        +"; Samesite=" + COOKIE_OPTION.SameSite
+        +";"
 
-    let cookieList = cookieData.split(";")
-    let cookieListNum = cookieList.length
+    //print(cookieCotent)
+    document.cookie = cookieCotent 
+}
+
+/**
+ * 
+ * @returns [result,oldestName,lastestNum,cookieCount]
+ * result는 오리지날 쿠키 리스트, 
+ * olderst 는 가장 오래된 쿠키 이름
+ * lastestNum은 가장 최근 쿠키의 넘버링
+ * cookiecount는 저장된 쿠키 개수
+ */
+function getCookieList(){
+    let cookieOrigin = document.cookie
+    let cookieList = cookieOrigin.split(";")
+    let result = []
     
+    let oldestName = undefined
+    let lastestNum = 0
+    
+    for (let i = 0 ; i < cookieList.length ; i++){
+        const entry = cookieList[i].split("=")
+        const name = entry[0].trim()
+        const value = entry[1].trim()
 
-    for (var i = 0 ;  i  < cookieListNum ; i ++){
-        var cookieListElem = cookieList[i]
-        let cookieListRaw = cookieListElem.split("=")
-        let cookieName = cookieListRaw[0].trim()
-        let cookieValue = cookieListRaw[1].trim()
+        if (name.indexOf(COOKIE_NAME) != -1){
+            if (oldestName == undefined){
+                oldestName = name
+            }
+            //print(name, value)
+            let cookieNum =Number(name.split("_")[1])
+            result.push([name,cookieNum,value])
 
-        if (cookieName == baseCookieName){
-            cookieValue = cookieValue.replaceAll("{}","\n")
-            console.log(cookieValue)
-            return cookieValue
+            lastestNum= cookieNum
         }
-        
+        else{;}        
     }
-    
-    return undefined
+
+    print(result)
+
+    return [result,oldestName,lastestNum]
 
 }
-
-function deleteCookie(){
-    document.cookie = "RecentCommand" + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function getNextCookieNumber(num){
+    return (num + 1) % MAX_COOKIE_NUM
 }
+
+function setCookie(cookieValue){
+
+ 
+    cookieValue = cookieValue.replaceAll("\n","{}")
+
+    // [result,oldestName,lastestNum]
+    let cookieListInfo = getCookieList();
+    let nextCookieName = COOKIE_NAME+"_"+String(getNextCookieNumber(cookieListInfo[2]))
+
+    createCookie(nextCookieName,cookieValue)
+}
+
 
 function setRecentCommand(){
-    const recentValue = getCookieValue()
-    console.log(recentValue)
-    if (recentValue == undefined){
-        return
+    // [result,oldestName,lastestNum]
+    const cookieList= getCookieList()[0]
+    
+    if (cookieList.length > 0){
+        setCommandInput(cookieList[0][2])
     }
-    else{
-        const commandInput = document.getElementById("commandInput")
-        commandInput.value = recentValue
-        console.log(recentValue)
+
+}
+
+function setRecentCommandByNum(Num){
+    // [result,oldestName,lastestNum]
+    const cookieList= getCookieList()[0]
+
+    for (let i = 0 ; i < cookieList.length ; i++){
+        // [name, number, value] 
+        const cookie = cookieList[i]
+        const cookieNum = cookie[1]
+        const cookieValue = cookie[2]
+        if (cookieNum == Num){
+            setCommandInput(cookieValue)
+            return
+        }
+    }
+}
+
+
+
+
+
+function setRecentCommandHistory(){
+    // [result,oldestName,lastestNum]
+    const cookieList= getCookieList()[0]
+    const commandHistoryList = document.getElementById("commandHistoryList");
+    //const commandHistoryList = document.getElementById("offcanvasHistory");
+    print(commandHistoryList.childNodes)
+    commandHistoryList.innerHTML = "";
+    
+    for (let i = 0 ; i < cookieList.length ; i++){
+        // [name, number, value] 
+        const cookie = cookieList[i]
+        const cookieValue = cookie[2]
+        //<button type="button" class="list-group-item list-group-item-action">A second button item</button>
+        let tempBtn = document.createElement("button")
+        tempBtn.type= "button"
+        tempBtn.className = "list-group-item list-group-item-action"
+        tempBtn.innerHTML = cookieValue
+        tempBtn.onclick = function(){ setCommandInput(cookieValue)}
+        
+        commandHistoryList.appendChild(tempBtn)
+
+        print("Call history function : ", cookie)
+        
     }
 
 }

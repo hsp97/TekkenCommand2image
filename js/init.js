@@ -4,8 +4,11 @@ let main = {
         let btnExcute = document.getElementById("btnExcute");
         btnExcute.onclick = _this.execute
 
-        const btnLoadRecent = document.getElementById("btnLoadRecent");
-        btnLoadRecent.onclick = _this.recent
+
+        const offcanvasHistory = document.getElementById("offcanvasHistory");
+        offcanvasHistory.addEventListener("show.bs.offcanvas", function (){
+            setRecentCommandHistory()
+        })
     } 
     , execute : function (){
         const commandParaResult = processCommandPara();
@@ -14,6 +17,9 @@ let main = {
     , recent : function (){
         
         setRecentCommand()
+    }
+    , commandHistory : function (){
+        //setRecentCommandHistory()
     }
 
 }
