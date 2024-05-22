@@ -8,6 +8,9 @@ function getCommandInput(){
 
 function setCommandInput(contents){
     const commandInput = document.getElementById("commandInput")
+    
+    contents = contents.replaceAll("{}","\n")
+    
     commandInput.value = contents;
 
 }
@@ -109,8 +112,9 @@ function setRecentCommandByNum(Num){
         // [name, number, value] 
         const cookie = cookieList[i]
         const cookieNum = cookie[1]
-        const cookieValue = cookie[2]
+        let cookieValue = cookie[2]
         if (cookieNum == Num){
+            
             setCommandInput(cookieValue)
             return
         }
@@ -132,7 +136,8 @@ function setRecentCommandHistory(){
     for (let i = 0 ; i < cookieList.length ; i++){
         // [name, number, value] 
         const cookie = cookieList[i]
-        const cookieValue = cookie[2]
+        let cookieValue = cookie[2]
+        cookieValue = cookieValue.replaceAll("{}","<br>")
         //<button type="button" class="list-group-item list-group-item-action">A second button item</button>
         let tempBtn = document.createElement("button")
         tempBtn.type= "button"
