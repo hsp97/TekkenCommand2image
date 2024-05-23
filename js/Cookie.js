@@ -1,5 +1,5 @@
 const COOKIE_NAME = "RecentCommand"
-const MAX_COOKIE_NUM = 7
+const MAX_COOKIE_NUM = 10
 
 function getCommandInput(){
     const commandInput = document.getElementById("commandInput")
@@ -8,9 +8,7 @@ function getCommandInput(){
 
 function setCommandInput(contents){
     const commandInput = document.getElementById("commandInput")
-    
-    contents = contents.replaceAll("<br>","\n")
-    
+    contents = contents.replaceAll("<br>","\n")    
     commandInput.value = contents;
 
 }
@@ -48,33 +46,38 @@ function createCookie(name,value){
  */
 function getCookieList(){
     let cookieOrigin = document.cookie
-    let cookieList = cookieOrigin.split(";")
     let result = []
-    
     let oldestName = undefined
     let lastestNum = 0
-    
-    for (let i = 0 ; i < cookieList.length ; i++){
-        const entry = cookieList[i].split("=")
-        const name = entry[0].trim()
-        const value = entry[1].trim()
+    let count = 0
 
-        if (name.indexOf(COOKIE_NAME) != -1){
-            if (oldestName == undefined){
-                oldestName = name
+    if (cookieOrigin != ""){
+
+        let cookieList = cookieOrigin.split(";")
+
+        for (let i = 0 ; i < cookieList.length ; i++){
+            const entry = cookieList[i].split("=")
+            const name = entry[0].trim()
+            const value = entry[1].trim()
+
+            if (name.indexOf(COOKIE_NAME) != -1){
+                if (oldestName == undefined){
+                    oldestName = name
+                }
+                //print(name, value)
+                let cookieNum =Number(name.split("_")[1])
+                result.push([name,cookieNum,value])
+                count += 1
+                lastestNum= cookieNum
             }
-            //print(name, value)
-            let cookieNum =Number(name.split("_")[1])
-            result.push([name,cookieNum,value])
-
-            lastestNum= cookieNum
+            else{;}        
         }
-        else{;}        
+
+        //print(result)
     }
 
-    print(result)
+    return [result,oldestName,lastestNum,count]
 
-    return [result,oldestName,lastestNum]
 
 }
 function getNextCookieNumber(num){
@@ -83,12 +86,27 @@ function getNextCookieNumber(num){
 
 function setCookie(cookieValue){
 
- 
-    cookieValue = cookieValue.replaceAll("\n","{}")
+    cookieValue = cookieValue.replaceAll("\n","<br>")
 
-    // [result,oldestName,lastestNum]
+    //[result,oldestName,lastestNum,count]
     let cookieListInfo = getCookieList();
-    let nextCookieName = COOKIE_NAME+"_"+String(getNextCookieNumber(cookieListInfo[2]))
+    let cookieList = cookieListInfo[0]
+    let oldestName = cookieListInfo[1]
+    let lastestNum = cookieListInfo[2]
+    let count = cookieListInfo[3]
+    let nextCookieName ;
+
+    if ( count == MAX_COOKIE_NUM){
+        nextCookieName = oldestName
+    }
+    else if (count == 0){
+        nextCookieName = COOKIE_NAME + "_0"
+    }
+    else{
+        nextCookieName = COOKIE_NAME+"_"+String(getNextCookieNumber(lastestNum))
+    }
+
+    //let nextCookieName = COOKIE_NAME+"_"+String(getNextCookieNumber(cookieListInfo[2]))
 
     createCookie(nextCookieName,cookieValue)
 }
@@ -96,11 +114,17 @@ function setCookie(cookieValue){
 
 function setRecentCommand(){
     // [result,oldestName,lastestNum]
-    const cookieList= getCookieList()[0]
+    const cookieListInfo = getCookieList()
+    let cookieList = cookieListInfo[0]
+    let oldestName = cookieListInfo[1]
+    let lastestNum = cookieListInfo[2]
+    let count = cookieListInfo[3]
+
     
-    if (cookieList.length > 0){
+    if (count > 0){
         setCommandInput(cookieList[0][2])
     }
+    else{;}
 
 }
 
@@ -127,30 +151,56 @@ function setRecentCommandByNum(Num){
 
 function setRecentCommandHistory(){
     // [result,oldestName,lastestNum]
-    const cookieList= getCookieList()[0]
+
+    const cookieListInfo = getCookieList()
+    let cookieList = cookieListInfo[0]
+    let oldestName = cookieListInfo[1]
+    let lastestNum = cookieListInfo[2]
+    let count = cookieListInfo[3]
+
     const commandHistoryList = document.getElementById("commandHistoryList");
     //const commandHistoryList = document.getElementById("offcanvasHistory");
     print(commandHistoryList.childNodes)
     commandHistoryList.innerHTML = "";
-    
-    for (let i = 0 ; i < cookieList.length ; i++){
-        // [name, number, value] 
-        const cookie = cookieList[i]
-        let cookieValue = cookie[2]
-        cookieValue = cookieValue.replaceAll("{}","<br>")
-        //<button type="button" class="list-group-item list-group-item-action">A second button item</button>
+
+    if (count == 0){
         let tempBtn = document.createElement("button")
         tempBtn.type= "button"
         tempBtn.className = "list-group-item list-group-item-action"
-        tempBtn.innerHTML = cookieValue
-        tempBtn.onclick = function(){ setCommandInput(cookieValue)}
-        
+        tempBtn.innerHTML = "최근 작성한 커맨드 목록이 없습니다."
+        tempBtn.disabled = true;
         commandHistoryList.appendChild(tempBtn)
+    }
+    else{
+        let rowNum = 1
+        for (let i = cookieList.length -1 ; i >= 0  ; i--){
+            // [name, number, value] 
+            const cookie = cookieList[i]
+            let cookieValue = cookie[2]
 
-        print("Call history function : ", cookie)
-        
+            let historyRow = document.createElement("div")
+            historyRow.className= "d-flex flex-row mb-3"
+
+            let numberLabel = document.createElement("button")
+            numberLabel.type= "button"
+            numberLabel.className = "btn btn-primary me-2"
+            numberLabel.innerHTML = rowNum
+            numberLabel.onclick = function(){ setCommandInput(cookieValue)}
+            historyRow.appendChild(numberLabel)
+            //<button type="button" class="list-group-item list-group-item-action">A second button item</button>
+            let tempBtn = document.createElement("button")
+            tempBtn.type= "button"
+            tempBtn.className = "list-group-item list-group-item-action"
+            tempBtn.innerHTML = cookieValue
+            tempBtn.onclick = function(){ setCommandInput(cookieValue)}
+            historyRow.appendChild(tempBtn)
+            commandHistoryList.appendChild(historyRow)
+            rowNum += 1
+        }
+
     }
 
+    
 }
 
 
