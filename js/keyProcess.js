@@ -14,11 +14,9 @@ function processButtonElement(command){
         result = result | button2BitTable[button]
     }
     
-    
     result = bit2FileTable[result]
     
     return result
-
 }
 
 

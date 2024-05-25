@@ -75,6 +75,7 @@ function drawImage(curResultId, curCommandLine){
     
     let result = document.getElementById(curResultId);
     
+    console.log("출력",curCommandLine);
     for (let lineIndex in curCommandLine){
         const lineElem = curCommandLine[lineIndex]
 

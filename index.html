@@ -14,7 +14,7 @@
     <div class='container d-flex justify-content-start'>
         <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="" aria-controls="offcanvasExample" id="btnCommandGuide" disabled> 가이드</button>
         <a class="btn btn-danger ms-2" href="https://forms.gle/YzGCJxmSvhmssZHdA" target="_blank"> 제보</a>
-         
+        <button type="button" class="btn btn-dark" id="btnCommandLive" onclick="liveToggle(this)" style="cursor: pointer;"> 실시간</button>
     </div>
     
      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasHistory" aria-labelledby="offcanvasRightLabel">
@@ -61,6 +61,20 @@
       }
       else{}
 
+      let liveBtnCheck = false
+      function liveToggle(obj){
+
+        if(liveBtnCheck===false){
+          obj.classList.remove('btn-dark')
+          obj.classList.add('btn-primary')
+          liveBtnCheck = true
+        } else{
+          obj.classList.add('btn-dark')
+          obj.classList.remove('btn-primary')
+          liveBtnCheck = false
+        }
+        
+      }
 
       console.log("INDEX.HTML LOAD COMPLETE")
     </script>
@@ -76,6 +90,7 @@
     <script src="./js/commandProcess.js" type="text/javascript"></script>
     <script src="./js/view.js" type="text/javascript"></script>
     <script src="./js/init.js" type="text/javascript"></script>
+    <script src="./js/initCustom.js" type="text/javascript"></script>
 
 </body>
 

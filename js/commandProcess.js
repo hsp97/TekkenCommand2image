@@ -24,6 +24,7 @@ function pushPlainTextList(plainTextList , wordResult){
         wordResult.push([target,ElemType.PLAIN])
     }
 
+    console.log("pushPlainText:",plainTextList, wordResult)
     return []
     
 }
@@ -58,18 +59,18 @@ function processWord (word){
     let plainTextList = []
 
     while(i < wordLen){
+
         if (word[i] in arrowTable){ //word.slice(i,i+1)
             plainTextList = pushPlainTextList(plainTextList,wordResult)
             
             wordResult.push([arrowTable[word[i]],ElemType.FILE])
             i += 1
         }
-        else if (word[i] in symbolTable){
+        else if (word[i] in symbolTable){    
             plainTextList = pushPlainTextList(plainTextList,wordResult)
 
             wordResult.push([word[i],ElemType.SYMBOL])
             i += 1
-
         }
         else if (word.slice(i,i+2) in buttonTable){
             plainTextList = pushPlainTextList(plainTextList,wordResult)
@@ -93,7 +94,7 @@ function processWord (word){
             curButton = buttons.join("")
             savetarget = processButtonElement(curButton)
             wordResult.push([savetarget,ElemType.FILE])
-
+            
         }
         else if (word[i] == " "){
             if (word[i-1] != " "){
@@ -111,11 +112,10 @@ function processWord (word){
         else{ 
             plainTextList.push(word[i])
             i += 1
-
         }
     }
 
-    plainTextList = pushPlainTextList(plainTextList,wordResult)
+    //plainTextList = pushPlainTextList(plainTextList,wordResult)
     return wordResult
 }
 
@@ -158,6 +158,7 @@ function processCommandPara(){
     }
 
     let commandLineList = prepareCommandpara(commandInputContent)
+    
     let resultList = []
     for (const commandLineIndex in commandLineList){
         const commandLine = commandLineList[commandLineIndex]
@@ -165,7 +166,6 @@ function processCommandPara(){
             let lineResult = processCommandLine(commandLine) 
             resultList.push([lineResult,commandLine])
         }
-        
     }
 
     return resultList;
@@ -239,4 +239,4 @@ function keyProcessTest(){
 }
 
 init()
-keyProcessTest()
+//keyProcessTest()

@@ -9,6 +9,7 @@ let main = {
         offcanvasHistory.addEventListener("show.bs.offcanvas", function (){
             setRecentCommandHistory()
         })
+
     } 
     , execute : function (){
         const commandParaResult = processCommandPara();
@@ -23,8 +24,6 @@ let main = {
     }
 
 }
-
-
 
 
 main.init();
