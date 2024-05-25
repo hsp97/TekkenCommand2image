@@ -1,7 +1,7 @@
 let customs = {
     keysPressed: {}, // 동시키입력체크
 
-    init : function (){
+    init : function (){ 
         const _this = this;
         const commandBox = document.getElementById("commandInput");
         commandBox.addEventListener("keydown", _this.commandKeyPress.bind(_this));
